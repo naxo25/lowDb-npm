@@ -1,0 +1,28 @@
+{
+  "posts": [
+    {
+      "id": "",
+      "title": ""
+    },
+    {
+      "id": "2",
+      "title": "ewq",
+      "obj": {
+        "id": "2",
+        "title": "ew"
+      }
+    },
+    {
+      "id": "3",
+      "title": "qew"
+    },
+    {
+      "id": "2",
+      "title": "ew"
+    }
+  ],
+  "user": {
+    "name": "nacho"
+  },
+  "count": 47
+}

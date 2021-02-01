@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>asdasdas</title>
+	<style>
+	</style>
+</head>
+<body>
+
+<form id='form'>
+	id: <input type="number" name="id" autofocus>
+	title: <input type="text" name="title">
+	<button type='button' onclick="add()">Send</button>
+	<button type='button' onclick='update()'>Update</button>
+	<button type='button' onclick='remove()'>Delete</button>
+</form>
+
+<ul id='items'></ul>
+
+<script>
+
+	let items
+	const ul = document.querySelector('#items')
+
+	function renderAdd(payload) {
+		const li = document.createElement("li");
+		const title = document.createTextNode(payload.title);
+		const id = document.createTextNode(payload.id);
+		li.id = payload.id
+		li.appendChild(id);
+		li.appendChild(title);
+		ul.appendChild(li);
+	}
+	function renderUp(payload) {
+		const li = document.getElementById(payload.id)
+		li.innerHTML = payload.id + payload.title
+	}
+	function renderRemove(payload) {
+		const li = document.getElementById(payload.id)
+		li.innerHTML = ''
+	}
+
+	const getJson = async() => {
+		await fetch('/getJson')
+		.then(response => response.json())
+		.then(data => items = data);
+		// console.log(items)
+		items.map(item => {
+			renderAdd(item)
+		})
+	}
+	getJson()
+
+	const form = document.querySelector('#form')
+	function add(){
+		const payload = { id: form.id.value, title: form.title.value }
+		actionFetch('POST', payload)
+		renderAdd(payload)
+	}
+	function update(){
+		const payload = { id: form.id.value, title: form.title.value }
+		actionFetch('PUT', payload)
+		renderUp(payload)
+	}
+	function remove(){
+		const payload = { id: form.id.value, title: form.title.value }
+		actionFetch('DELETE', payload)
+		renderRemove(payload)
+	}
+
+	function actionFetch(type, payload){
+		fetch('/', {
+		    method: type,
+		    body: JSON.stringify(payload),
+		    headers: {
+		      'Content-Type': 'application/json'
+		    }
+		})
+	}
+
+</script>
+
+</body>
+</html>
