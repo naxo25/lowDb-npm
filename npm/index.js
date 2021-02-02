@@ -10,38 +10,36 @@
 	const db = low(adapter)
 
 	// Set some defaults (required if your JSON file is empty)
-	db.defaults({ posts: [], user: {} })
+	db.defaults({ items: []})
 	  .write()
 
-	// Add a post
-	db.get('posts')
-	  // .push({ id: 1, title: 'lowdb is awesome'})
-	  .write()
+	const getJson = async(id) => {
+		let exits = await db.get('items').find({id}).value()
+		return await exits
+	}
 
-	// Set a user using Lodash shorthand syntax
-	db.set('user.name', 'nacho')
-	  .write()
-	  
-	// Increment count
-	db.update('count', n => n + 1)
-	  .write()
-
-	const getJson = async() => {
-		const posts = db.get('posts').value()
-		return await posts
+	const getsJson = async() => {
+		const items = await db.get('items').value()
+		return items
 	}
 	const postJson = async(json) => {
-		db.get('posts').push(json).write()
+		if (!await getJson(json.id)) {
+			await db.get('items').push(json).write()
+		}
 	}
 	const putJson = async(json) => {
-		db.get('posts').find({id: json.id}).assign({title: json.title}).write()
+		if (await getJson(json.id)) {
+			await db.get('items').find({id: json.id}).assign({title: json.title}).write()
+		} else {}
 	}
 	const deleteJson = async(json) => {
-		db.get('posts').remove({id: json.id}).write()
+		if (await getJson(json.id))
+			await db.get('items').remove({id: json.id}).write()
 	}
 
 	module.exports = {
 		getJson,
+		getsJson,
 		postJson,
 		putJson,
 		deleteJson

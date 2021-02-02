@@ -1,6 +1,6 @@
 # lowDb
 
-Ejemplo y código de librería npm que hice para operaciones básicas en Jsons locales con lowDb.
+Ejemplo y código de librería npm para uso de operaciones básicas en Jsons que se comportan como Bds con lowDb en el lado cliente.
 
 ### Pre-requisitos 📋
 NodeJs https://nodejs.org/es/

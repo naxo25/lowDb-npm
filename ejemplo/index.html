@@ -41,7 +41,7 @@
 	}
 
 	const getJson = async() => {
-		await fetch('/getJson')
+		await fetch('/getsJson')
 		.then(response => response.json())
 		.then(data => items = data);
 		// console.log(items)

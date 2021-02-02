@@ -1,14 +1,14 @@
 	
 	const express = require("express");
-	// const { getJson, postJson, putJson, deleteJson } = require("../npm/index.js");
-	const { getJson, postJson, putJson, deleteJson } = require("naxlowdb"); /* Librería npm */
+	const { getJson, getsJson, postJson, putJson, deleteJson } = require("../npm/index.js");
+	//const { getJson, postJson, putJson, deleteJson } = require("naxlowdb"); /* Librería npm */
 	const body = require('body-parser')
 	
 	const app = express()
 	app.use(body.json())
 
-	app.get('/getJson', async(req, res) => {
-		const datos = await getJson()
+	app.get('/getsJson', async(req, res) => {
+		const datos = await getsJson()
 		await res.send(datos)
 	})
 
