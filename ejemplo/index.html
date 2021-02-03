@@ -1,73 +1,57 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>asdasdas</title>
+	<title>Ej uso lowdb con packete naxlowdb</title>
 	<style>
 	</style>
 </head>
 <body>
 
-<form id='form'>
-	id: <input type="number" name="id" autofocus>
-	title: <input type="text" name="title">
-	<button type='button' onclick="add()">Send</button>
-	<button type='button' onclick='update()'>Update</button>
-	<button type='button' onclick='remove()'>Delete</button>
-</form>
+	<form id='form'>
 
-<ul id='items'></ul>
+		id: <input type="number" name="id" autofocus>
+		title: <input type="text" name="title">
+
+		<button type='button' onclick="Submit('add', 'POST')">Send</button>
+		<button type='button' onclick="Submit('update', 'PUT')">Update</button>
+		<button type='button' onclick="Submit('delete', 'DELETE')">Delete</button>
+
+	</form>
+
+	<ul id='items'></ul>
 
 <script>
 
-	let items
-	const ul = document.querySelector('#items')
+	let items;
 
-	function renderAdd(payload) {
-		const li = document.createElement("li");
-		const title = document.createTextNode(payload.title);
-		const id = document.createTextNode(payload.id);
-		li.id = payload.id
-		li.appendChild(id);
-		li.appendChild(title);
-		ul.appendChild(li);
-	}
-	function renderUp(payload) {
-		const li = document.getElementById(payload.id)
-		li.innerHTML = payload.id + payload.title
-	}
-	function renderRemove(payload) {
-		const li = document.getElementById(payload.id)
-		li.innerHTML = ''
-	}
+	function render(payload, obj) {
 
-	const getJson = async() => {
-		await fetch('/getsJson')
-		.then(response => response.json())
-		.then(data => items = data);
-		// console.log(items)
-		items.map(item => {
-			renderAdd(item)
-		})
-	}
-	getJson()
+		const ul = document.querySelector('#items')
 
-	const form = document.querySelector('#form')
-	function add(){
-		const payload = { id: form.id.value, title: form.title.value }
-		actionFetch('POST', payload)
-		renderAdd(payload)
-	}
-	function update(){
-		const payload = { id: form.id.value, title: form.title.value }
-		actionFetch('PUT', payload)
-		renderUp(payload)
-	}
-	function remove(){
-		const payload = { id: form.id.value, title: form.title.value }
-		actionFetch('DELETE', payload)
-		renderRemove(payload)
-	}
+		if (obj == 'add') {
 
+			const li = document.createElement("li");
+			const title = document.createTextNode(payload.title);
+			const id = document.createTextNode(payload.id);
+			li.id = payload.id
+			li.appendChild(id);
+			li.appendChild(title);
+			ul.appendChild(li);
+
+		} else if (obj == 'update') {
+
+			const li = document.getElementById(payload.id)
+			li.innerHTML = payload.id + payload.title
+
+		} else if (obj == 'delete') {
+
+			const li = document.getElementById(payload.id)
+			li.innerHTML = ''
+
+		}
+
+	}
+	
 	function actionFetch(type, payload){
 		fetch('/', {
 		    method: type,
@@ -77,6 +61,24 @@
 		    }
 		})
 	}
+
+	const form = document.querySelector('#form')
+	function Submit(obj, action){
+		const payload = { id: form.id.value, title: form.title.value }
+		actionFetch(action, payload)
+		render(payload, obj)
+	}
+
+
+	const getsJson = async() => {
+		await fetch('/getsJson')
+		.then(response => response.json())
+		.then(data => items = data);
+		items.map(item => {
+			render(item, 'add')
+		})
+	}
+	getsJson()
 
 </script>
 

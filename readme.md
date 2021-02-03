@@ -12,30 +12,54 @@ npm i
 npm run dev
 ```
 
-## Instalación librería
+## Instalar librería
+
+[packete](https://www.npmjs.com/package/naxlowdb)
 ```
 npm i naxlowdb
 ```
 
-const { getJson, postJson, putJson, deleteJson } = require("naxlowdb");
 ### Operaciones 
 
-const getJson = async() => {
-	const posts = db.get('posts').value()
-	return await posts
-}
+	# const { getsJson, postJson, putJson, deleteJson } = require("naxlowdb");
 
-const ejJson = { id, title, msj, etc } = datos de req.body o alguna función que hagas
+	const low = require('lowdb')
+	const FileSync = require('lowdb/adapters/FileSync')
 
-const postJson = async(ejJson) => {
-	db.get('posts').push(ejJson).write()
-}
-const putJson = async(ejJson) => {
-	db.get('posts').find({id: ejJson.id}).assign({title: ejJson.title}).write()
-}
-const deleteJson = async(ejJson) => {
-	db.get('posts').remove({id: ejJson.id}).write()
-}
+	const adapter = new FileSync('items.json')
+	const db = low(adapter)
+
+	const getJson = async(id) => {
+		let exits = await db.get('items').find({id}).value()
+		return await exits
+	}
+
+	const getsJson = async() => {
+		const items = await db.get('items').value()
+		return items
+	}
+	const postJson = async(json) => {
+		if (!await getJson(json.id)) {
+			await db.get('items').push(json).write()
+		} else {}
+	}
+	const putJson = async(json) => {
+		if (await getJson(json.id)) {
+			await db.get('items').find({id: json.id}).assign({title: json.title}).write()
+		}
+	}
+	const deleteJson = async(json) => {
+		if (await getJson(json.id)) 
+			await db.get('items').remove({id: json.id}).write()
+	}
+
+	module.exports = {
+		getJson,
+		getsJson,
+		postJson,
+		putJson,
+		deleteJson
+	}
 
 ## Versionado 📌
 

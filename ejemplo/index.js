@@ -1,7 +1,6 @@
 	
 	const express = require("express");
-	const { getJson, getsJson, postJson, putJson, deleteJson } = require("../npm/index.js");
-	//const { getJson, postJson, putJson, deleteJson } = require("naxlowdb"); /* Librería npm */
+	const { getsJson, postJson, putJson, deleteJson } = require("naxlowdb"); /* Librería npm */
 	const body = require('body-parser')
 	
 	const app = express()

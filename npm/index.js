@@ -1,11 +1,7 @@
 
 	const low = require('lowdb')
 	const FileSync = require('lowdb/adapters/FileSync')
-	const path = require('path')
-
-	const express = require("express");
-	const app = express()
-
+	const alert = require('alert');
 	const adapter = new FileSync('items.json')
 	const db = low(adapter)
 
@@ -25,16 +21,22 @@
 	const postJson = async(json) => {
 		if (!await getJson(json.id)) {
 			await db.get('items').push(json).write()
+		} else {
+			alert('Id ' + json.id + ' ya existe')
 		}
 	}
 	const putJson = async(json) => {
 		if (await getJson(json.id)) {
 			await db.get('items').find({id: json.id}).assign({title: json.title}).write()
-		} else {}
+		} else {
+			alert('Id ' + json.id + ' no existe')
+		}
 	}
 	const deleteJson = async(json) => {
-		if (await getJson(json.id))
+		if (await getJson(json.id)) {
 			await db.get('items').remove({id: json.id}).write()
+			alert('Id ' + json.id + ' borrado exitosamente')
+		}
 	}
 
 	module.exports = {
