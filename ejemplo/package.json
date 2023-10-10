@@ -4,11 +4,10 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
-    "alert": "^5.0.10",
     "express": "^4.17.1",
-    "naxlowdb": "^1.0.2"
+    "naxlowdb": "^1.0.2",
+    "node-notifier": "^10.0.1"
   },
-  "devDependencies": {},
   "scripts": {
     "start": "node index.js --ignore items.json",
     "dev": "nodemon index.js --ignore items.json",
